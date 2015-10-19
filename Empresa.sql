@@ -1,0 +1,16 @@
+CREATE DATABASE EMPRESA;
+
+CREATE TABLE TipoPerfis (
+	TipoPerfilID INT AUTO_INCREMENT
+	,DescricaoTipoPerfis VARCHAR(30)
+	,CONSTRAINT PK_TipoPerfis PRIMARY KEY (TipoPerfilID)
+	);
+
+CREATE TABLE Usuario (
+	UsuarioID INT AUTO_INCREMENT
+	,LOGIN VARCHAR(30)
+	,senha VARCHAR(40)
+	,TipoPerfil INT
+	,CONSTRAINT pk_Usuario PRIMARY KEY (UsuarioID)
+	,CONSTRAINT FK_Usuario FOREIGN KEY (TipoPerfil) REFERENCES TipoPerfis(TipoPerfilID)
+	);

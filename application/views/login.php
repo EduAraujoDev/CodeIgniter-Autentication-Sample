@@ -17,7 +17,7 @@
 
                 $data = array(
                     'type' => 'text',                    
-                    'name' => 'login', 
+                    'name' => 'usuario', 
                     'autocomplete' => 'off', 
                     'placeholder' => 'Login'
                 );
