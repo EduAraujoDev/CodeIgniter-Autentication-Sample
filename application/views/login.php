@@ -9,6 +9,10 @@
             <?php
                 echo "<h1>".$titulo."</h1>";
 
+                if($this->session->flashdata('usuarioInvalido')){
+                    echo $this->session->flashdata('usuarioInvalido');
+                }                
+
                 echo form_open('login/validacao');
 
                 echo "<h2>Digite o login e senha</h2>";

@@ -11,11 +11,20 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-		$dados = array(
-			'titulo' => 'CodeIgniter - CRUD - Autenticação'
-			);
 
-		$this->load->view('login', $dados);	
+        if(isset($_SESSION['userLogin'])){
+            if(strtoupper($_SESSION['userLogin']['tpuser']) == 'ADMIN'){
+                redirect('Admin');
+            } else {
+                redirect('Usuario');
+            }
+        } else {
+			$dados = array(
+				'titulo' => 'CodeIgniter - CRUD - Autenticação'
+				);
+
+			$this->load->view('login', $dados);
+		}
 	}
 
 	public function validacao()
@@ -27,8 +36,13 @@ class Login extends CI_Controller {
 			$usuario	= $this->input->post('usuario');
 			$senha		= md5($this->input->post('senha'));
 
-			$retorno = $this->login_model->get_user_byid( $usuario, $senha);				
+			if($this->login_model->get_user_byid( $usuario, $senha)->row() != NULL){
+				
 
+			} else {
+				$this->session->set_flashdata('usuarioInvalido','Login ou senha inv&aacute;lido');
+                redirect('login', 'refresh');
+			}
 		} else {
 			$dados = array(
 				'titulo' => 'CodeIgniter - CRUD - Autenticação'
