@@ -36,12 +36,30 @@ class Login extends CI_Controller {
 			$usuario	= $this->input->post('usuario');
 			$senha		= md5($this->input->post('senha'));
 
-			if($this->login_model->get_user_byid( $usuario, $senha)->row() != NULL){
-				
+			$retorno = $this->login_model->get_user_byid( $usuario, $senha)->row();
 
+			if($retorno != NULL){
+				if($retorno->TipoPerfil == 1){
+					$tipoAcesso = 'ADMIN';
+				} else {
+					$tipoAcesso = 'USUARIO';
+				}
+
+				$data = array(
+					'usuario' => $retorno->LOGIN,
+					'tipoAcesso' => $tipoAcesso
+					);
+
+				$this->session->set_userdata('userLogin', $data);
+
+				if($tipoAcesso == 'ADMIN'){
+					redirect('/admin','refresh');
+				} else {
+					redirect('/usuario','refresh');
+				}
 			} else {
 				$this->session->set_flashdata('usuarioInvalido','Login ou senha inv&aacute;lido');
-                redirect('login', 'refresh');
+                redirect('/', 'refresh');
 			}
 		} else {
 			$dados = array(
@@ -51,4 +69,11 @@ class Login extends CI_Controller {
 			$this->load->view('login', $dados);
 		}
 	}
+
+    public function logout(){
+        if(isset($_SESSION['userLogin'])){
+            $this->session->unset_userdata('userLogin');
+            redirect('/','refresh');
+        }
+    }
 }

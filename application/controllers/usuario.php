@@ -7,9 +7,11 @@ class Usuario extends CI_Controller {
 		parent::__construct();
 
         if(isset($_SESSION['userLogin'])){
-
+            if(strtoupper($_SESSION['userLogin']['tipoAcesso']) == 'ADMIN'){
+                redirect('/admin', 'refresh');
+            }
         } else {
-            redirect('login');
+            redirect('/', 'refresh');
         }
 	}
 
