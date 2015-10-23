@@ -20,6 +20,13 @@
 			echo "<a href='".base_url()."admin'>Listar</a> |";
 			echo "<a href='".base_url()."admin/inserir'>Incluir</a>";
 
+            if(isset($_SESSION['usuarioOk'])){
+            	echo "<br>";
+                echo $this->session->flashdata('usuarioOk');
+            }
+
+            echo "<br><br>";		
+
 		    foreach ($usuarios as $usuario) {
 		    	$this->table->add_row($usuario->UsuarioID, $usuario->LOGIN);
 		    }

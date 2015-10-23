@@ -47,11 +47,13 @@ class Admin extends CI_Controller {
         if($this->form_validation->run()==TRUE) {
             $dados = array(
                 'login' => $this->input->post('login'),
-                'senha' => $this->input->post('senha1'),
+                'senha' => md5($this->input->post('senha1')),
                 'TipoPerfil' => $this->input->post('perfil')
                 );
 
             $this->login_model->set_usuario($dados);
+
+            $this->session->set_flashdata('usuarioOk','Usuario cadastrado!');
 
             $dados = array(
                 'titulo' => 'Admin',
