@@ -4,8 +4,6 @@
 		<title><?php echo $titulo;?></title>
 	</head>
 	<body>
-		<h1><?php echo $titulo;?></h1>
-
 		<?php
 		    echo form_open('login/logout');
 
@@ -16,7 +14,17 @@
 		    );
 		    echo form_button($data);
 		    echo form_close();
-		?>
 
+		    echo "<h1>".$titulo."</h1>";
+	    	
+			echo "<a href='".base_url()."admin'>Listar</a> |";
+			echo "<a href='".base_url()."admin/inserir'>Incluir</a>";
+
+		    foreach ($usuarios as $usuario) {
+		    	$this->table->add_row($usuario->UsuarioID, $usuario->LOGIN);
+		    }
+
+		    echo $this->table->generate();
+		?>
 	</body>
 </html>		

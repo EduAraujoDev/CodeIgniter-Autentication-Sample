@@ -4,8 +4,6 @@
 		<title><?php echo $titulo;?></title>
 	</head>
 	<body>
-		<h1><?php echo $titulo;?></h1>
-
 		<?php
 		    echo form_open('login/logout');
 
@@ -16,7 +14,8 @@
 		    );
 		    echo form_button($data);
 		    echo form_close();
-		?>
-		
+
+		    echo "<h1>".$titulo."</h1>";		    
+		?>		
 	</body>
 </html>		

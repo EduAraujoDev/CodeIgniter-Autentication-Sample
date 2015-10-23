@@ -13,4 +13,18 @@ class Login_model extends CI_Model {
             return NULL;
         }
     }
+
+    public function get_usuarios_all(){
+        return $this->db->get('Usuario');
+    }
+
+    public function get_tiposPerfis_all(){
+        return $this->db->get('TipoPerfis');
+    }
+
+    public function set_usuario($dados=NULL){
+        if($dados <> NULL){
+            $this->db->insert('usuario',$dados);
+        }
+    }
 }

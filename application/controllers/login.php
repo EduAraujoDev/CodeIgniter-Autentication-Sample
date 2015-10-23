@@ -13,7 +13,7 @@ class Login extends CI_Controller {
 	{
 
         if(isset($_SESSION['userLogin'])){
-            if(strtoupper($_SESSION['userLogin']['tpuser']) == 'ADMIN'){
+            if(strtoupper($_SESSION['userLogin']['tipoAcesso']) == 'ADMIN'){
                 redirect('Admin');
             } else {
                 redirect('Usuario');
