@@ -39,7 +39,7 @@ class Admin extends CI_Controller {
 
     public function inserirNovoUsuario()
     {
-        $this->form_validation->set_rules('login', 'login', 'required');
+        $this->form_validation->set_rules('login', 'login', 'required|is_unique[usuario.login]');
         $this->form_validation->set_rules('perfil','perfil','required|is_natural');
         $this->form_validation->set_rules('senha1', 'senha2', 'required');
         $this->form_validation->set_rules('senha2', 'senha2', 'required|matches[senha1]');
@@ -69,5 +69,61 @@ class Admin extends CI_Controller {
 
             $this->load->view('admin/inserir', $dados);
         }            
+    }
+
+    public function editar()
+    {
+        $idUsuario = $this->uri->segment(3);
+
+        if($idUsuario <> NULL){
+            $dados = array(
+                'titulo' => 'Admin - Alterar',
+                'tiposPerfis' => $this->login_model->get_tiposPerfis_all()->result(),
+                'usuario' => $this->login_model->get_usuario_byid($idUsuario)->row()
+            );
+
+            $this->load->view('admin/alterar', $dados);
+        } else {
+            redirect('admin','refresh');
+        }
+    }
+
+    public function alterarUsuario(){
+        $this->form_validation->set_rules('perfil','perfil','required|is_natural');
+        $this->form_validation->set_rules('senha1', 'senha2', 'required');
+        $this->form_validation->set_rules('senha2', 'senha2', 'required|matches[senha1]');
+
+        $idUsuario = $this->uri->segment(3);
+
+        if($this->form_validation->run()==TRUE) {
+            $dados = array(
+                'senha' => md5($this->input->post('senha1')),
+                'TipoPerfil' => $this->input->post('perfil')
+                );
+
+            $this->login_model->update_usuario($dados, array('UsuarioID' => $idUsuario));
+
+            $this->session->set_flashdata('usuarioOk','Usuario alterado!');
+
+            $dados = array(
+                'titulo' => 'Admin',
+                'usuarios' => $this->login_model->get_usuarios_all()->result()
+            );
+
+            $this->load->view('admin/home', $dados);
+        } else {
+            $dados = array(
+                'titulo' => 'Admin - Alterar',
+                'tiposPerfis' => $this->login_model->get_tiposPerfis_all()->result(),
+                'usuario' => $this->login_model->get_usuario_byid($idUsuario)->row()
+            );
+
+            $this->load->view('admin/alterar', $dados);            
+        }
+    }
+
+    public function deletar()
+    {
+
     }
 }

@@ -25,10 +25,15 @@
                 echo $this->session->flashdata('usuarioOk');
             }
 
-            echo "<br><br>";		
+            echo "<br><br>";
 
 		    foreach ($usuarios as $usuario) {
-		    	$this->table->add_row($usuario->UsuarioID, $usuario->LOGIN);
+		    	$this->table->add_row(
+		    		$usuario->UsuarioID, 
+		    		$usuario->LOGIN,
+		    		anchor("admin/editar/$usuario->UsuarioID", 'Editar'),
+		    		anchor("admin/deletar/$usuario->UsuarioID", 'Deletar')
+		    		);
 		    }
 
 		    echo $this->table->generate();
