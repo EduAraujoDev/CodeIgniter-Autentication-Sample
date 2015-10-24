@@ -48,5 +48,12 @@ class Login_model extends CI_Model {
         if($dados <> null && $condicao <> NULL){
             $this->db->update('Usuario',$dados, $condicao);
         }
-    }    
+    }
+
+    public function delete_usuario($condicao=NULL)
+    {
+        if($condicao <> NULL){
+            $this->db->delete("Usuario",$condicao);
+        }
+    }
 }

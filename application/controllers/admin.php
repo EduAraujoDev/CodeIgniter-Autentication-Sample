@@ -55,12 +55,7 @@ class Admin extends CI_Controller {
 
             $this->session->set_flashdata('usuarioOk','Usuario cadastrado!');
 
-            $dados = array(
-                'titulo' => 'Admin',
-                'usuarios' => $this->login_model->get_usuarios_all()->result()
-            );
-
-            $this->load->view('admin/home', $dados);
+            redirect('admin/','refresh');
         } else {
             $dados = array(
                 'titulo' => 'Admin - Inserir',
@@ -105,12 +100,7 @@ class Admin extends CI_Controller {
 
             $this->session->set_flashdata('usuarioOk','Usuario alterado!');
 
-            $dados = array(
-                'titulo' => 'Admin',
-                'usuarios' => $this->login_model->get_usuarios_all()->result()
-            );
-
-            $this->load->view('admin/home', $dados);
+            redirect('admin/','refresh');
         } else {
             $dados = array(
                 'titulo' => 'Admin - Alterar',
@@ -118,12 +108,39 @@ class Admin extends CI_Controller {
                 'usuario' => $this->login_model->get_usuario_byid($idUsuario)->row()
             );
 
-            $this->load->view('admin/alterar', $dados);            
+            $this->load->view('admin/alterar', $dados);
         }
     }
 
     public function deletar()
     {
+        $idUsuario = $this->uri->segment(3);
 
+        if($idUsuario <> NULL){
+            $dados = array(
+                'titulo' => 'Admin - Deletar',
+                'tiposPerfis' => $this->login_model->get_tiposPerfis_all()->result(),
+                'usuario' => $this->login_model->get_usuario_byid($idUsuario)->row()
+            );
+
+            $this->load->view('admin/deletar', $dados);
+        } else {
+            redirect('admin','refresh');
+        }
+    }
+
+    public function deletarUsuario()
+    {
+        $idUsuario = $this->uri->segment(3);
+
+        if($idUsuario <> NULL){
+            $this->login_model->delete_usuario(array('UsuarioID' => $idUsuario));
+
+            $this->session->set_flashdata('usuarioOk','Usuario deletado!');
+        } else {
+            $this->session->set_flashdata('usuarioOk','Erro ao excluir usuário!');
+        }
+
+        redirect('admin/','refresh');
     }
 }
